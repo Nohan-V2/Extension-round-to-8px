@@ -1,8 +1,8 @@
 {
   "name": "round-to-8px",
   "displayName": "Round to 8px",
-  "description": "Arrondit les valeurs CSS en pixels au multiple de 8 le plus proche",
-  "version": "0.0.1",
+  "description": "Arrondit les valeurs CSS en pixels en privilégiant les multiples de 8 et en utilisant les multiples de 4 si nécessaire",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.60.0"
   },

@@ -4,12 +4,12 @@
 [![Installs](https://vsmarketplacebadge.apphb.com/installs/round-to-8px.svg)](https://marketplace.visualstudio.com/items?itemName=round-to-8px)
 [![Rating](https://vsmarketplacebadge.apphb.com/rating/round-to-8px.svg)](https://marketplace.visualstudio.com/items?itemName=round-to-8px)
 
-Une extension VSCode qui arrondit automatiquement les valeurs CSS en pixels au multiple de 8 le plus proche, suivant les bonnes pratiques de design system et de mise en page cohérente.
+Une extension VSCode qui arrondit automatiquement les valeurs CSS en pixels, en privilégiant les multiples de 8 et en utilisant les multiples de 4 si nécessaire. Cette approche suit les bonnes pratiques de design system pour une mise en page cohérente et harmonieuse.
 
 ## ✨ Fonctionnalités
 
 - 🔍 Détection automatique des valeurs en pixels dans les fichiers CSS, SCSS et LESS
-- 🔢 Arrondi automatique au multiple de 8 le plus proche
+- 🔢 Arrondi automatique en privilégiant les multiples de 8, avec repli sur les multiples de 4 si nécessaire
 - ⚡ Traitement rapide du fichier actif
 - 🎨 Support complet des fichiers CSS, SCSS et LESS
 - 🔄 Conservation du formatage et des commentaires
@@ -38,12 +38,12 @@ Une extension VSCode qui arrondit automatiquement les valeurs CSS en pixels au m
 ```css
 /* Avant */
 .element {
-  width: 15px;
-  height: 23px;
-  margin: 7px;
-  padding: 3px 11px;
-  font-size: 15px;
-  border-radius: 5px;
+  width: 15px;    /* 16px (multiple de 8) */
+  height: 23px;   /* 24px (multiple de 8) */
+  margin: 7px;    /* 8px (multiple de 8) */
+  padding: 3px 11px;  /* 4px 12px (multiples de 4) */
+  font-size: 15px;  /* 16px (multiple de 8) */
+  border-radius: 5px;  /* 4px (multiple de 4) */
 }
 
 /* Après */
@@ -51,11 +51,23 @@ Une extension VSCode qui arrondit automatiquement les valeurs CSS en pixels au m
   width: 16px;
   height: 24px;
   margin: 8px;
-  padding: 0 8px;
+  padding: 4px 12px;
   font-size: 16px;
-  border-radius: 8px;
+  border-radius: 4px;
 }
 ```
+
+### Comportement d'arrondi
+
+- **Privilégie les multiples de 8** : Si la différence avec le multiple de 8 le plus proche est de 4px ou moins
+- **Utilise les multiples de 4** : Si la différence avec le multiple de 8 le plus proche est supérieure à 4px
+- **Exemples** :
+  - 5px → 4px (multiple de 4)
+  - 6px → 8px (multiple de 8, différence de 2px)
+  - 10px → 8px (multiple de 8, différence de 2px)
+  - 14px → 16px (multiple de 8, différence de 2px)
+  - 18px → 16px (multiple de 8, différence de 2px)
+  - 19px → 20px (multiple de 4, car la différence avec 16 serait de 3, mais avec 24 serait de 5)
 
 ## 🛠 Développement
 

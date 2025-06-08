@@ -1,7 +1,16 @@
 import * as vscode from "vscode";
 
 function roundToMultipleOf8(pxValue: number): number {
-  return Math.round(pxValue / 8) * 8;
+  // Essayer d'abord d'arrondir au multiple de 8 le plus proche
+  const roundedTo8 = Math.round(pxValue / 8) * 8;
+  
+  // Si la différence est de 4 ou moins, on garde le multiple de 8
+  if (Math.abs(pxValue - roundedTo8) <= 4) {
+    return roundedTo8;
+  }
+  
+  // Sinon, on arrondit au multiple de 4 le plus proche
+  return Math.round(pxValue / 4) * 4;
 }
 
 function processDocument(document: vscode.TextDocument): vscode.TextEdit[] {
