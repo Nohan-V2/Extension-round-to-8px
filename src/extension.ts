@@ -1,35 +1,60 @@
 import * as vscode from "vscode";
 
 function roundToMultipleOf8(pxValue: number): number {
-  // Essayer d'abord d'arrondir au multiple de 8 le plus proche
-  const roundedTo8 = Math.round(pxValue / 8) * 8;
+  // Arrondir à 2 décimales pour éviter les erreurs d'arrondi
+  const value = Math.round(pxValue * 100) / 100;
   
-  // Si la différence est de 4 ou moins, on garde le multiple de 8
-  if (Math.abs(pxValue - roundedTo8) <= 4) {
+  // Calculer les multiples les plus proches
+  const roundedTo8 = Math.round(value / 8) * 8;
+  const roundedTo4 = Math.round(value / 4) * 4;
+  
+  // Calculer les différences
+  const diffTo8 = Math.abs(value - roundedTo8);
+  const diffTo4 = Math.abs(value - roundedTo4);
+  
+  // Si on est très proche d'un multiple de 8 (à 1px près), on le prend
+  if (diffTo8 <= 1) {
     return roundedTo8;
   }
   
-  // Sinon, on arrondit au multiple de 4 le plus proche
-  return Math.round(pxValue / 4) * 4;
+  // Si on est plus proche d'un multiple de 4 que de 8, on prend le multiple de 4
+  if (diffTo4 < diffTo8) {
+    return roundedTo4;
+  }
+  
+  // Sinon, on prend le multiple de 8
+  return roundedTo8;
 }
 
 function processDocument(document: vscode.TextDocument): vscode.TextEdit[] {
   const edits: vscode.TextEdit[] = [];
   const text = document.getText();
 
-  // Expression régulière pour trouver les valeurs en pixels
-  const pxRegex = /(\d+)px/g;
+  // Expression régulière pour trouver les valeurs numériques avec unités
+  const pxRegex = /(\d*\.?\d+)(px)/g;
   let match;
 
   while ((match = pxRegex.exec(text)) !== null) {
-    const originalValue = parseInt(match[1], 10);
-    const roundedValue = roundToMultipleOf8(originalValue);
+    const originalNumber = parseFloat(match[1]);
+    const unit = match[2];
+    let roundedValue = originalNumber;
+    
+    // Ne pas arrondir les pourcentages ou les valeurs très petites
+    if (originalNumber >= 1 || unit !== '%') {
+      roundedValue = roundToMultipleOf8(originalNumber);
+    }
 
-    if (originalValue !== roundedValue) {
+    // Formater le résultat avec le même nombre de décimales que l'original
+    const decimalPlaces = (match[1].split('.')[1] || '').length;
+    const formattedValue = decimalPlaces > 0 
+      ? roundedValue.toFixed(decimalPlaces)
+      : Math.round(roundedValue).toString();
+
+    if (originalNumber !== parseFloat(formattedValue)) {
       const startPos = document.positionAt(match.index);
       const endPos = document.positionAt(match.index + match[0].length);
       const range = new vscode.Range(startPos, endPos);
-      const edit = vscode.TextEdit.replace(range, `${roundedValue}px`);
+      const edit = vscode.TextEdit.replace(range, `${formattedValue}${unit}`);
       edits.push(edit);
     }
   }
@@ -74,7 +99,7 @@ export function activate(context: vscode.ExtensionContext) {
       }
 
       const document = editor.document;
-      if (!["css", "scss", "less"].includes(document.languageId)) {
+      if (!["css"].includes(document.languageId)) {
         vscode.window.showWarningMessage("Ce fichier n'est pas un fichier CSS");
         return;
       }
@@ -96,7 +121,7 @@ export function activate(context: vscode.ExtensionContext) {
       return;
     }
 
-    const validLanguages = ["css", "scss", "less"];
+    const validLanguages = ["css"];
     if (!validLanguages.includes(document.languageId)) {
       console.log(`Type de document non pris en charge: ${document.languageId}`);
       return;
