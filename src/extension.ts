@@ -127,7 +127,7 @@ function applyEdits(
     .then((success) => {
       if (success) {
         vscode.window.showInformationMessage(
-          `${edits.length} valeur(s) en pixels arrondie(s) au multiple de 8`
+          `${edits.length} valeur(s) en pixels arrondie(s)`
         );
       }
       return success;
