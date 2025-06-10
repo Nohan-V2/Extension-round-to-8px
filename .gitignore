@@ -30,7 +30,6 @@ logs/
 # Build / Dist
 dist/
 build/
-out/
 
 # Dependency directories
 bower_components/
