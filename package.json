@@ -1,51 +1,58 @@
 {
 	"name": "round-to-8px",
 	"displayName": "Round to 8px",
+	"publisher": "nohanv2",
 	"description": "Arrondit les valeurs CSS en pixels en privilégiant les multiples de 8 et en utilisant les multiples de 4 si nécessaire",
 	"version": "0.1.0",
 	"engines": {
-	  "vscode": "^1.60.0"
+		"vscode": "^1.60.0"
 	},
 	"categories": [
-	  "Other"
+		"Other"
 	],
 	"activationEvents": [
-	  "onStartupFinished",
-	  "onCommand:round-to-8px.roundPixels"
+		"onStartupFinished",
+		"onCommand:round-to-8px.roundPixels"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
-	  "commands": [
-		{
-		  "command": "round-to-8px.roundPixels",
-		  "title": "Arrondir les pixels au multiple de 8"
-		}
-	  ]
+		"commands": [
+			{
+				"command": "round-to-8px.roundPixels",
+				"title": "Arrondir les pixels au multiple de 8"
+			}
+		]
 	},
 	"scripts": {
-	  "vscode:prepublish": "npm run compile",
-	  "compile": "tsc -p ./",
-	  "watch": "tsc -watch -p ./",
-	  "pretest": "npm run compile && npm run lint",
-	  "lint": "eslint src --ext ts",
-	  "test": "node ./out/test/runTest.js"
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js"
 	},
-	"devDependencies": {
-	  "@types/glob": "^8.1.0",
-	  "@types/mocha": "^10.0.1",
-	  "@types/node": "^16.11.7",
-	  "@types/vscode": "^1.60.0",
-	  "@typescript-eslint/eslint-plugin": "^5.30.0",
-	  "@typescript-eslint/parser": "^5.30.0",
-	  "@vscode/test-electron": "^2.3.8",
-	  "eslint": "^8.13.0",
-	  "glob": "^8.1.0",
-	  "mocha": "^10.2.0",
-	  "typescript": "^4.7.2"
+	"repository": {
+    "type": "git",
+    "url": "https://github.com/username/repository.git"
+  },
+  "devDependencies": {
+		"@types/glob": "^8.1.0",
+		"@types/mocha": "^10.0.1",
+		"@types/node": "^16.11.7",
+		"@types/vscode": "^1.60.0",
+		"@typescript-eslint/eslint-plugin": "^5.30.0",
+		"@typescript-eslint/parser": "^5.30.0",
+		"@vscode/test-electron": "^2.3.8",
+		"eslint": "^8.13.0",
+		"glob": "^8.1.0",
+		"mocha": "^10.2.0",
+		"typescript": "^4.7.2"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
-	"type": "commonjs"
-  }
-  
+	"type": "commonjs",
+	"dependencies": {
+		"@vscode/vsce": "^3.5.0"
+	}
+}
